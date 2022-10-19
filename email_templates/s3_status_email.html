@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EnviDat S3 Status</title>
+  </head>
+  <body>
+    <h1>Current S3 Sizes</h1>
+
+    {% for name, size in buckets %}
+    <li><b>{{ name }}</b> {{ size }}GB</li>
+    {% endfor %}
+  </body>
+</html>

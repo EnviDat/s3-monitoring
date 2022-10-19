@@ -1,0 +1,36 @@
+[project]
+name = "s3-monitoring"
+dynamic = ["version"]
+description = "Monitoring S3 bucket metrics and alerting."
+authors = [
+    {name = "Sam Woodcock", email = "samuel.woodcock@wsl.ch"},
+]
+dependencies = [
+    "envidat-utils[dotenv]>=1.2.4",
+    "aiosmtplib>=1.1.7",
+    "slack-sdk>=3.19.1",
+    "jinja2>=3.1.2",
+]
+requires-python = ">=3.9"
+license = {text = "MIT"}
+[project.optional-dependencies]
+
+[tool.pdm]
+version = {from = "__version__.py"}
+[tool.pdm.dev-dependencies]
+dev = [
+    "debugpy>=1.6.2",
+]
+
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.1"
+version_files = [
+    "pyproject.toml:version",
+    "__version__.py",
+    ".env:APP_VERSION",
+]
