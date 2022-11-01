@@ -118,6 +118,7 @@ async def main():
         log.info("Not cleaning up bucket multiparts. Only on Sunday.")
 
     # Trigger warning if bucket size exceeds 20TB
+    size_warning_triggered = False
     for bucket_name, size_gb in bucket_size_dict.items():
         if size_gb > 20000:
             log.warning(f"Bucket {bucket_name} is currently {size_gb}GB. Quota=20TB.")
@@ -128,7 +129,7 @@ async def main():
             )
             size_warning_triggered = True
     if not size_warning_triggered:
-        log.info("All buckets are below 20GB, no issues.")
+        log.info("All buckets are below 20TB, no issues.")
 
     log.info("Finished main s3-monitoring script.")
 
