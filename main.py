@@ -91,6 +91,9 @@ async def main():
 
     bucket_size_dict = {}
     all_buckets = Bucket.list_buckets()
+    # Don't check envicloud
+    if "envicloud" in all_buckets:
+        all_buckets.remove("envicloud")
 
     for bucket in all_buckets:
         s3_bucket = Bucket(bucket_name=bucket)
