@@ -97,27 +97,38 @@ async def main():
         log.debug(f"Getting size of bucket {bucket}.")
         bucket_size_gb = s3_bucket.size(items_per_page=100000) / 1024 / 1024 / 1024
         bucket_size_dict[bucket] = bucket_size_gb
+    log.info(f"Bucket sizes: {bucket_size_dict}")
 
     # Only send status updates on Thursday
-    if datetime.today().weekday() == 4:
-        log.info("Sending bucket status email, as Thursday.")
+    force_status = os.getenv("FORCE_STATUS_UPDATE", default=None)
+    if force_status or datetime.today().weekday() == 4:
+        log.info("Sending bucket status email.")
         await send_s3_status_email(smtp_server, smtp_email, bucket_size_dict)
+    else:
+        log.info("Not sending bucket status email. Only on Thursday.")
 
     # Only run multipart cleanup on Sunday
-    if datetime.today().weekday() == 7:
-        log.info("Cleaning up bucket multiparts, as Sunday.")
+    force_cleanup = os.getenv("FORCE_MULTIPART_CLEANUP", default=None)
+    if force_cleanup or datetime.today().weekday() == 7:
+        log.info("Cleaning up bucket multiparts.")
         for bucket in all_buckets:
             s3_bucket = Bucket(bucket_name=bucket)
             s3_bucket.clean_multiparts()
+    else:
+        log.info("Not cleaning up bucket multiparts. Only on Sunday.")
 
     # Trigger warning if bucket size exceeds 20TB
     for bucket_name, size_gb in bucket_size_dict.items():
         if size_gb > 20000:
+            log.warning(f"Bucket {bucket_name} is currently {size_gb}GB. Quota=20TB.")
             await send_s3_warning_email(smtp_server, smtp_email, bucket_name, size_gb)
             await trigger_slack_webhook(
                 f"WARNING: Bucket {bucket_name} is currently {size_gb}GB, "
                 "exceeding 20TB quota."
             )
+            size_warning_triggered = True
+    if not size_warning_triggered:
+        log.info("All buckets are below 20GB, no issues.")
 
     log.info("Finished main s3-monitoring script.")
 

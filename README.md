@@ -41,3 +41,8 @@ SLACK_WEBHOOK=xxx (optional)
 - Push the latest code.
 - Watch the build pipeline run in Gitlab.
 - Cronjob from the `k8s-cron` repo runs on schedule, using built image.
+
+## Additional ENV
+
+- FORCE_MULTIPART_CLEANUP: set to force multipart cleanup on all days.
+- FORCE_STATUS_UPDATE: set to send a status update on all days.
