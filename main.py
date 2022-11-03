@@ -99,7 +99,7 @@ async def main():
         s3_bucket = Bucket(bucket_name=bucket)
         log.debug(f"Getting size of bucket {bucket}.")
         bucket_size_gb = s3_bucket.size(items_per_page=100000) / 1024 / 1024 / 1024
-        bucket_size_dict[bucket] = bucket_size_gb
+        bucket_size_dict[bucket] = round(bucket_size_gb, 2)
     log.info(f"Bucket sizes: {bucket_size_dict}")
 
     # Only send status updates on Thursday
