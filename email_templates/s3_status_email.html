@@ -6,7 +6,7 @@
   <body>
     <h1>Current S3 Sizes</h1>
 
-    {% for name, size in buckets.items() %}
+    {% for name, size in bucket_size_dict.items() %}
     <li><b>{{ name }}</b> {{ size }}GB</li>
     {% endfor %}
   </body>
