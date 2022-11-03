@@ -104,7 +104,7 @@ async def main():
 
     # Only send status updates on Thursday
     force_status = os.getenv("FORCE_STATUS_UPDATE", default=None)
-    if force_status or datetime.today().weekday() == 4:
+    if force_status or datetime.today().weekday() == 3:
         log.info("Sending bucket status email.")
         await send_s3_status_email(smtp_server, smtp_email, bucket_size_dict)
     else:
@@ -112,7 +112,7 @@ async def main():
 
     # Only run multipart cleanup on Sunday
     force_cleanup = os.getenv("FORCE_MULTIPART_CLEANUP", default=None)
-    if force_cleanup or datetime.today().weekday() == 7:
+    if force_cleanup or datetime.today().weekday() == 6:
         log.info("Cleaning up bucket multiparts.")
         for bucket in all_buckets:
             s3_bucket = Bucket(bucket_name=bucket)
