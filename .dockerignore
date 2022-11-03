@@ -6,3 +6,4 @@
 !pyproject.toml
 !pdm.lock
 !__version__.py
+!email_templates

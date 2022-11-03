@@ -74,7 +74,8 @@ COPY --from=build \
     /opt/python/pkgs
 ENV PYTHONPATH="/opt/python/pkgs"
 WORKDIR /opt/app
-COPY main.py ./
+COPY main.py .
+COPY email_templates /opt/app/email_templates
 
 # Upgrade pip & pre-compile deps to .pyc, add appuser, permissions
 RUN python -m pip install --no-cache-dir --upgrade pip \
